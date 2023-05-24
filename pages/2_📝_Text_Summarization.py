@@ -40,7 +40,7 @@ st.markdown(
 )
 
 text_input = st.text_area(
-    "",
+    "Your Paragraph",
     placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Viverra maecenas accumsan lacus vel facilisis volutpat. Dignissim diam quis enim lobortis scelerisque fermentum dui faucibus. Lorem donec massa sapien faucibus et molestie ac feugiat. Sed faucibus turpis in eu mi. At augue eget arcu dictum varius duis at consectetur lorem. Non curabitur gravida arcu ac tortor dignissim. Ridiculus mus mauris vitae ultricies leo integer malesuada. Etiam tempor orci eu lobortis elementum nibh. Suspendisse in est ante in nibh mauris cursus mattis molestie. Neque vitae tempus quam pellentesque. Egestas egestas fringilla phasellus faucibus. Diam maecenas sed enim ut.",
     height=300,
     label_visibility="collapsed",
