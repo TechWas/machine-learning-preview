@@ -2,9 +2,11 @@
 __pycache__/
 *.py[cod]
 *$py.class
+saved_model/
 
 # C extensions
 *.so
+*.zip
 
 # Distribution / packaging
 .Python
