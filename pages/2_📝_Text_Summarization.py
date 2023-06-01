@@ -13,8 +13,6 @@ st.write("# Text Summarization Page")
 
 st.markdown(
     """
-    *We are sorry, this endpoint is not yet implemented*
-    
     Text summarization is a technique that can help you extract the main points from a long article. It can save you time and effort by providing you with a concise summary of the content. Our website offers a text summarization service that can help you create summaries of electronic waste articles in minutes. You just need to paste the article you want to summarize, and our website will generate a summary for you. 
     
     Our website uses advanced natural language processing techniques to ensure that the summaries are accurate and coherent. Try our text summarization and discover how it can help you learn more about electronic waste.
