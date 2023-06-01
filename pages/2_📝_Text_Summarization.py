@@ -62,7 +62,9 @@ with mid:
     )
     if solve_button:
         # req to api
-        response = f.summarize("")
+        time = f.timer(None)
+        response = f.summarize(text_input)
+        time = f.timer(time)
 
 st.write("---")
 
@@ -75,6 +77,6 @@ result = st.text_area(
     "The summarization results",
     placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     height=200,
-    value=response,
+    value=response + "\n\n" + time,
     label_visibility="collapsed",
 )
