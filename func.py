@@ -1,18 +1,29 @@
 import requests
 import os
 import io
-from dotenv import load_dotenv
 import streamlit as st
-from first_init import model, tokenizer
+import typing
+from dotenv import load_dotenv
+from datetime import datetime
+
+# from transformers import pipeline
 
 load_dotenv()
 
-API_URL = os.getenv("API_URL")
+IMAGE_API_URL = os.getenv("IMAGE_API_URL")
+SUMMARIZATION_API_URL = os.getenv("SUMMARIZATION_API_URL")
+SUMMARIZATION_TOKEN = os.getenv("SUMMARIZATION_TOKEN")
+# summarizer = pipeline(
+#     "summarization",
+#     model="sesar/BartLargeCNN-FineTuned",
+#     tokenizer="sesar/BartLargeCNN-FineTuned",
+#     framework="tf",
+# )
 
 
 @st.cache_data
 def default():
-    response = requests.get(API_URL)
+    response = requests.get(IMAGE_API_URL)
 
     if response.status_code == 200:
         # data = response.json()
@@ -24,7 +35,7 @@ def default():
 
 @st.cache_data
 def predict(image):
-    url = API_URL + "/predict/"
+    url = IMAGE_API_URL + "/predict/"
 
     payload = {}
     files = {"file": ("image.jpg", io.BytesIO(image), "image/jpeg")}
@@ -35,26 +46,49 @@ def predict(image):
     return response.text
 
 
+# @st.cache_data
+# def summarize(text: str) -> str:
+#     """
+#     Summarizes a given text.
+
+#     This function takes in a text as input and returns a summarized version of it. Currently, the function is unfinished and simply returns the original text.
+
+#     Args:
+#         text (str): The text to be summarized.
+
+#     Returns:
+#         str: The summarized text.
+#     """
+#     input_ids = tokenizer.encode(text, return_tensors="tf", truncation=True)
+#     generated_sequence = model.generate(input_ids=input_ids)
+#     summarized_text = tokenizer.decode(
+#         generated_sequence.numpy().squeeze(), skip_special_tokens=True
+#     )
+
+#     return summarized_text
+
+
 @st.cache_data
-def summarize(text: str) -> str:
-    """
-    Summarizes a given text.
+def summarize_api(text: str) -> str:
+    headers = {"Authorization": f"Bearer {SUMMARIZATION_TOKEN}"}
 
-    This function takes in a text as input and returns a summarized version of it. Currently, the function is unfinished and simply returns the original text.
+    def query(payload):
+        response = requests.post(SUMMARIZATION_API_URL, headers=headers, json=payload)
+        return response.json()
 
-    Args:
-        text (str): The text to be summarized.
-
-    Returns:
-        str: The summarized text.
-    """
-    input_ids = tokenizer.encode(text, return_tensors="tf", truncation=True)
-    generated_sequence = model.generate(input_ids=input_ids)
-    summarized_text = tokenizer.decode(
-        generated_sequence.numpy().squeeze(), skip_special_tokens=True
+    output = query(
+        {
+            "inputs": text,
+        }
     )
 
-    return summarized_text
+    return output
+
+
+# @st.cache_data
+# def summarize_pipeline(text: str) -> str:
+#     return summarizer(text)[0]["summary_text"]
+
 
 @st.cache_data
 def timer(start_time: datetime = None) -> "typing.Union[datetime.datetime, str]":
