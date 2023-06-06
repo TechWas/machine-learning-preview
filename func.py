@@ -1,24 +1,17 @@
 import requests
 import os
 import io
-import streamlit as st
 import typing
+import json
+import streamlit as st
 from dotenv import load_dotenv
 from datetime import datetime
-
-# from transformers import pipeline
 
 load_dotenv()
 
 IMAGE_API_URL = os.getenv("IMAGE_API_URL")
 SUMMARIZATION_API_URL = os.getenv("SUMMARIZATION_API_URL")
 SUMMARIZATION_TOKEN = os.getenv("SUMMARIZATION_TOKEN")
-# summarizer = pipeline(
-#     "summarization",
-#     model="sesar/BartLargeCNN-FineTuned",
-#     tokenizer="sesar/BartLargeCNN-FineTuned",
-#     framework="tf",
-# )
 
 
 @st.cache_data
@@ -26,7 +19,6 @@ def default():
     response = requests.get(IMAGE_API_URL)
 
     if response.status_code == 200:
-        # data = response.json()
         return response.text
     else:
         data = "An error occurred:", response.status_code
@@ -35,6 +27,14 @@ def default():
 
 @st.cache_data
 def predict(image):
+    """This function takes in an image and returns a prediction from an external API.
+
+    Args:
+        image (bytes): The image to be used for prediction.
+
+    Returns:
+        str: The prediction result.
+    """
     url = IMAGE_API_URL + "/predict/"
 
     payload = {}
@@ -42,34 +42,21 @@ def predict(image):
     headers = {}
 
     response = requests.request("POST", url, headers=headers, data=payload, files=files)
+    formatted_json = json.dumps(response.json(), indent=4)
 
-    return response.text
-
-
-# @st.cache_data
-# def summarize(text: str) -> str:
-#     """
-#     Summarizes a given text.
-
-#     This function takes in a text as input and returns a summarized version of it. Currently, the function is unfinished and simply returns the original text.
-
-#     Args:
-#         text (str): The text to be summarized.
-
-#     Returns:
-#         str: The summarized text.
-#     """
-#     input_ids = tokenizer.encode(text, return_tensors="tf", truncation=True)
-#     generated_sequence = model.generate(input_ids=input_ids)
-#     summarized_text = tokenizer.decode(
-#         generated_sequence.numpy().squeeze(), skip_special_tokens=True
-#     )
-
-#     return summarized_text
+    return formatted_json
 
 
 @st.cache_data
 def summarize_api(text: str) -> str:
+    """This function takes in a text string and returns a summarized version of the text using an external API.
+
+    Args:
+        text (str): The text to be summarized.
+
+    Returns:
+        str: The summarized version of the input text.
+    """
     headers = {"Authorization": f"Bearer {SUMMARIZATION_TOKEN}"}
 
     def query(payload):
@@ -83,11 +70,6 @@ def summarize_api(text: str) -> str:
     )
 
     return output
-
-
-# @st.cache_data
-# def summarize_pipeline(text: str) -> str:
-#     return summarizer(text)[0]["summary_text"]
 
 
 @st.cache_data

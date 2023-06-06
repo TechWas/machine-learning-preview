@@ -1,9 +1,7 @@
 import streamlit as st
 import os
 from PIL import Image
-from first_init import run_init
 
-run_init()
 logo = Image.open("image/logo.png")
 logo_green = Image.open("image/logo_green.png")
 
