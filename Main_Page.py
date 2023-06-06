@@ -1,5 +1,4 @@
 import streamlit as st
-import os
 from PIL import Image
 
 logo = Image.open("image/logo.png")
