@@ -28,6 +28,6 @@ st.markdown(
 
 st.markdown(
     """    
-    ##### **Visit our repository [here](https://github.com/TechWas)!**
+    ##### **Visit our repository [here](https://github.com/Techwaste)!**
     """
 )
