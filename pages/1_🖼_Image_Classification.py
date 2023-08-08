@@ -55,7 +55,6 @@ with left_layout:
         "Your Image", type=["jpg", "jpeg"], label_visibility="collapsed"
     )
     if uploaded_file:
-        img_val = uploaded_file.getvalue()
         print(uploaded_file.name)
 
 with right_layout:
@@ -64,8 +63,8 @@ with right_layout:
         unsafe_allow_html=True,
     )
 
-    if img_val != None:
-        st.image(image=img_val)
+    if uploaded_file != None:
+        st.image(image=uploaded_file.getvalue())
 
     # contains response
     # response = ...
@@ -89,5 +88,8 @@ st.write("")
 
 if solve_button:
     # req to api
-    response = f.predict(img_val)
+    # response = f.predict(uploaded_file.getvalue())
+
+    # req to local
+    response = f.predict_local(uploaded_file)
     st.code(response)
